@@ -23,13 +23,13 @@ export default function AboutSection() {
             className="dossier-panel p-6"
           >
             <div className="terminal-label mb-4">SUBJECT BRIEF</div>
-            <p className="font-body text-sm text-foreground/80 leading-relaxed mb-4">
+            <p className="font-body text-sm leading-relaxed mb-4" style={{ color: "oklch(0.84 0.009 80)" }}>
               I'm a final-year software engineer at The LNM Institute of Information Technology, Rajasthan.
               I focus on backend systems, APIs, and scalable application design — building structured systems
               with clean architecture, handling state, and solving real-world problems with performance and
               reliability in mind.
             </p>
-            <p className="font-body text-sm text-foreground/80 leading-relaxed">
+            <p className="font-body text-sm leading-relaxed" style={{ color: "oklch(0.84 0.009 80)" }}>
               I use AI as a practical tool to enhance engineering workflows and system capabilities.
               My interests lie at the intersection of system architecture and product experience.
               I think in systems, build with intention, and ship things that work.
@@ -47,7 +47,11 @@ export default function AboutSection() {
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono text-[10px] tracking-wider text-crimson-dim border border-border px-2.5 py-1 hover:border-crimson-dim/60 transition-colors"
+                  className="font-mono text-[10px] tracking-wider border px-2.5 py-1 transition-colors hover:border-crimson-dim"
+                  style={{
+                    color: "oklch(0.72 0.01 260)",
+                    borderColor: "oklch(0.30 0.006 260)",
+                  }}
                 >
                   {tag}
                 </span>
@@ -64,7 +68,7 @@ export default function AboutSection() {
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between text-xs font-mono">
                   <span className="text-label tracking-wider">{item.label}</span>
-                  <span className="text-foreground/70">{item.value}</span>
+                  <span style={{ color: "oklch(0.86 0.009 80)" }}>{item.value}</span>
                 </div>
               ))}
             </div>
@@ -83,7 +87,7 @@ export function SectionHeader({ label, title }: { label: string; title: string }
       viewport={{ once: true }}
       className="flex items-center gap-4"
     >
-      <span className="font-mono text-xs text-crimson-dim">[{label}]</span>
+      <span className="font-mono text-xs font-medium" style={{ color: "oklch(0.60 0.18 18)" }}>[{label}]</span>
       <h2 className="font-display text-lg md:text-xl font-semibold tracking-wider text-foreground">
         {title}
       </h2>

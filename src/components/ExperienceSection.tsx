@@ -45,7 +45,7 @@ export default function ExperienceSection() {
       <div className="relative max-w-6xl mx-auto">
         <SectionHeader label="05" title="MISSION LOG // TIMELINE" />
 
-        <div className="mt-10 space-y-0">
+        <div className="mt-10 space-y-4">
           {timeline.map((entry, i) => (
             <motion.div
               key={entry.id}
@@ -66,20 +66,20 @@ export default function ExperienceSection() {
                   </span>
                 </div>
 
-                <h3 className="font-display text-sm font-semibold text-foreground mb-0.5">
+                <h3 className="font-display text-base font-semibold text-foreground mb-1">
                   {entry.title}
                 </h3>
-                <p className="font-mono text-[10px] text-label tracking-wider mb-1">
+                <p className="font-mono text-xs tracking-wider mb-1" style={{ color: "oklch(0.70 0.01 260)" }}>
                   {entry.org}
                 </p>
-                <p className="font-mono text-[10px] text-crimson-dim tracking-wider mb-3">
+                <p className="font-mono text-xs tracking-wider mb-4" style={{ color: "oklch(0.55 0.16 18)" }}>
                   {entry.period}
                 </p>
 
-                <ul className="space-y-1">
+                <ul className="space-y-2">
                   {entry.details.map((detail, j) => (
-                    <li key={j} className="font-body text-xs text-muted-foreground flex items-start gap-2">
-                      <span className="text-crimson-dim mt-1.5 shrink-0">▸</span>
+                    <li key={j} className="flex items-start gap-2 text-sm leading-relaxed" style={{ color: "oklch(0.82 0.009 80)" }}>
+                      <span className="shrink-0 mt-1" style={{ color: "oklch(0.55 0.18 18)" }}>▸</span>
                       {detail}
                     </li>
                   ))}

@@ -3,22 +3,56 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
 const navLinks = [
-  { label: "ABOUT", href: "#about" },
-  { label: "PROJECTS", href: "#projects" },
-  { label: "SKILLS", href: "#skills" },
-  { label: "EXPERIENCE", href: "#experience" },
-  { label: "CONTACT", href: "#contact" },
+  { label: "ABOUT", href: "#about", id: "about" },
+  { label: "PROJECTS", href: "#projects", id: "projects" },
+  { label: "SKILLS", href: "#skills", id: "skills" },
+  { label: "EXPERIENCE", href: "#experience", id: "experience" },
+  { label: "CONTACT", href: "#contact", id: "contact" },
 ];
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  // Active section via IntersectionObserver
+  useEffect(() => {
+    const sectionIds = navLinks.map((l) => l.id);
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((obs) => obs.disconnect());
+  }, []);
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setMobileOpen(false);
+  };
 
   return (
     <motion.nav
@@ -36,15 +70,29 @@ export default function Navigation() {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground hover:text-crimson transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
+                className={`relative font-mono text-[10px] tracking-[0.2em] transition-colors ${
+                  isActive
+                    ? "text-crimson"
+                    : "text-muted-foreground hover:text-crimson"
+                }`}
+              >
+                {link.label}
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-active-indicator"
+                    className="absolute -bottom-1 left-0 right-0 h-px bg-crimson"
+                  />
+                )}
+              </a>
+            );
+          })}
           <Link
             to="/resume"
             className="font-mono text-[10px] tracking-[0.2em] border border-crimson-dim text-crimson px-3 py-1.5 hover:bg-crimson/10 transition-colors"
@@ -73,10 +121,14 @@ export default function Navigation() {
             <a
               key={link.label}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="block py-2 font-mono text-xs tracking-[0.2em] text-muted-foreground hover:text-crimson transition-colors"
+              onClick={(e) => handleNavClick(e, link.href)}
+              className={`block py-2 font-mono text-xs tracking-[0.2em] transition-colors ${
+                activeSection === link.id
+                  ? "text-crimson"
+                  : "text-muted-foreground hover:text-crimson"
+              }`}
             >
-              {link.label}
+              {activeSection === link.id ? "▸ " : ""}{link.label}
             </a>
           ))}
           <Link

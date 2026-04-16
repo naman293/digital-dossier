@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -59,52 +60,74 @@
 
 :root {
   --radius: 0.25rem;
+
+  /* ── Base palette ── */
   --background: oklch(0.13 0.005 260);
-  --foreground: oklch(0.92 0.01 80);
+
+  /* PRIMARY readable text — near-white, very slightly warm */
+  --foreground: oklch(0.94 0.008 80);
+
   --card: oklch(0.16 0.005 260);
-  --card-foreground: oklch(0.92 0.01 80);
+  --card-foreground: oklch(0.94 0.008 80);
   --popover: oklch(0.16 0.005 260);
-  --popover-foreground: oklch(0.92 0.01 80);
+  --popover-foreground: oklch(0.94 0.008 80);
   --primary: oklch(0.50 0.18 18);
   --primary-foreground: oklch(0.95 0.005 80);
   --secondary: oklch(0.20 0.005 260);
-  --secondary-foreground: oklch(0.75 0.01 80);
+  --secondary-foreground: oklch(0.82 0.01 80);
+
+  /* SECONDARY readable text — used for body copy, descriptions, bullet points */
   --muted: oklch(0.20 0.005 260);
-  --muted-foreground: oklch(0.55 0.01 260);
+  --muted-foreground: oklch(0.75 0.01 260);
+
   --accent: oklch(0.50 0.18 18);
   --accent-foreground: oklch(0.95 0.005 80);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.95 0.005 80);
-  --border: oklch(0.25 0.005 260);
+
+  /* Borders: slightly lighter so panels don't bleed into each other */
+  --border: oklch(0.28 0.006 260);
   --input: oklch(0.22 0.005 260);
   --ring: oklch(0.50 0.18 18);
+
   --chart-1: oklch(0.50 0.18 18);
   --chart-2: oklch(0.60 0.12 180);
   --chart-3: oklch(0.40 0.07 227);
   --chart-4: oklch(0.83 0.19 84);
   --chart-5: oklch(0.77 0.19 70);
+
   --sidebar: oklch(0.14 0.005 260);
-  --sidebar-foreground: oklch(0.92 0.01 80);
+  --sidebar-foreground: oklch(0.94 0.008 80);
   --sidebar-primary: oklch(0.50 0.18 18);
   --sidebar-primary-foreground: oklch(0.95 0.005 80);
   --sidebar-accent: oklch(0.20 0.005 260);
   --sidebar-accent-foreground: oklch(0.92 0.01 80);
-  --sidebar-border: oklch(0.25 0.005 260);
+  --sidebar-border: oklch(0.28 0.006 260);
   --sidebar-ring: oklch(0.50 0.18 18);
 
-  /* Dossier tokens */
-  --crimson: oklch(0.50 0.18 18);
-  --crimson-dim: oklch(0.35 0.12 18);
+  /* ── Dossier design tokens ── */
+  --crimson:      oklch(0.50 0.18 18);
+  --crimson-dim:  oklch(0.38 0.13 18);   /* slightly brighter than before */
   --crimson-glow: oklch(0.55 0.22 18);
-  --surface: oklch(0.16 0.005 260);
+
+  --surface:       oklch(0.16 0.005 260);
   --surface-raised: oklch(0.19 0.005 260);
-  --grid-line: oklch(0.22 0.005 260);
-  --label: oklch(0.45 0.01 260);
+  --grid-line:     oklch(0.22 0.005 260);
+
+  /* LABEL text — used for system labels/metadata keys; now clearly readable */
+  --label: oklch(0.65 0.01 260);
 }
 
+/* ─────────────────────────────────────────────
+   BASE LAYER
+───────────────────────────────────────────── */
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
@@ -113,15 +136,45 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal overflow that causes section bleed */
+    overflow-x: hidden;
+  }
+
+  /* Ensure sections never overlap each other */
+  section {
+    position: relative;
+    /* Stack context so z-index of children is isolated */
+    isolation: isolate;
   }
 
   ::selection {
     background-color: oklch(0.50 0.18 18 / 30%);
     color: var(--color-foreground);
   }
+
+  input, textarea {
+    color-scheme: dark;
+  }
 }
 
-/* Scanline overlay */
+@layer components {
+  /* Body/description text — main readable content */
+  .text-body {
+    color: oklch(0.84 0.009 80);
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  /* Secondary meta text (role, date, company) */
+  .text-meta {
+    color: oklch(0.72 0.009 260);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* Scanline overlay — fixed, above everything, non-interactive */
 .scanline-overlay {
   pointer-events: none;
   position: fixed;
@@ -131,12 +184,12 @@
     0deg,
     transparent,
     transparent 2px,
-    oklch(0 0 0 / 3%) 2px,
-    oklch(0 0 0 / 3%) 4px
+    oklch(0 0 0 / 2.5%) 2px,
+    oklch(0 0 0 / 2.5%) 4px
   );
 }
 
-/* Grid pattern background */
+/* Grid pattern background — kept subtle so it doesn't fight text */
 .grid-pattern {
   background-image:
     linear-gradient(var(--color-grid-line) 1px, transparent 1px),
@@ -144,90 +197,102 @@
   background-size: 40px 40px;
 }
 
-/* Dossier panel */
+/* ── Dossier panel ──
+   Corner bracket decorations are clipped to the parent's bounds
+   using a clip path trick so they never overlap sibling elements. */
 .dossier-panel {
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   position: relative;
+  /* Establish stacking context so ::before/::after are contained */
+  isolation: isolate;
 }
 
-.dossier-panel::before,
+/* Top-left corner bracket */
+.dossier-panel::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid var(--color-crimson-dim);
+  border-left: 1px solid var(--color-crimson-dim);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom-right corner bracket */
 .dossier-panel::after {
   content: '';
   position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: var(--color-crimson-dim);
-}
-
-.dossier-panel::before {
-  top: -1px;
-  left: -1px;
-  border-top: 1px solid;
-  border-left: 1px solid;
-}
-
-.dossier-panel::after {
   bottom: -1px;
   right: -1px;
-  border-bottom: 1px solid;
-  border-left: 0;
-  border-right: 1px solid;
-  border-top: 0;
-  border-bottom: 1px solid;
-  border-color: var(--color-crimson-dim);
+  width: 10px;
+  height: 10px;
+  border-bottom: 1px solid var(--color-crimson-dim);
+  border-right: 1px solid var(--color-crimson-dim);
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Terminal label */
+/* ── Terminal label ──
+   System/metadata keys — clearly visible, not decorative-only */
 .terminal-label {
   font-family: var(--font-mono);
   font-size: 0.625rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-label);
+  opacity: 1;
 }
 
 /* Crimson glow text */
 .text-glow {
-  text-shadow: 0 0 20px oklch(0.50 0.18 18 / 40%), 0 0 40px oklch(0.50 0.18 18 / 20%);
+  text-shadow:
+    0 0 20px oklch(0.50 0.18 18 / 45%),
+    0 0 40px oklch(0.50 0.18 18 / 22%);
 }
 
-/* Status indicator pulse */
+/* ── Status pulse ── */
 @keyframes status-pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50%       { opacity: 0.4; }
 }
 
 .status-pulse {
   animation: status-pulse 2s ease-in-out infinite;
 }
 
-/* Flicker animation */
+/* ── Flicker ── */
 @keyframes flicker {
   0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.8; }
-  94% { opacity: 1; }
-  96% { opacity: 0.9; }
-  97% { opacity: 1; }
+  92%       { opacity: 1; }
+  93%       { opacity: 0.8; }
+  94%       { opacity: 1; }
+  96%       { opacity: 0.9; }
+  97%       { opacity: 1; }
 }
 
 .flicker {
   animation: flicker 4s ease-in-out infinite;
 }
 
-/* Node dot */
+/* ── Node dot ── */
 .node-dot {
+  display: inline-block;
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: var(--color-crimson-dim);
+  flex-shrink: 0;
 }
 
-/* Data strip */
+/* ── Data strip ── */
 .data-strip {
   height: 2px;
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     transparent 0%,
     var(--color-crimson-dim) 20%,
     var(--color-crimson) 50%,
@@ -236,7 +301,7 @@
   );
 }
 
-/* Circuit line */
+/* ── Circuit line ── */
 .circuit-line {
   background: var(--color-grid-line);
   height: 1px;
@@ -254,20 +319,26 @@
   border-radius: 50%;
 }
 
-/* Dithered image */
+/* ── Portrait frame ── */
 .portrait-frame {
   position: relative;
   border: 1px solid var(--color-crimson-dim);
+  overflow: hidden;
 }
 
+/* Double-frame accent border — drawn over the image */
 .portrait-frame::before {
   content: '';
   position: absolute;
-  inset: -4px;
-  border: 1px solid var(--color-border);
+  inset: -6px;
+  border: 1px solid oklch(0.30 0.005 260 / 75%);
+  pointer-events: none;
+  z-index: 2;
 }
 
-/* Scrollbar styling */
+/* ─────────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -284,5 +355,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-crimson-dim);
 }
-
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
