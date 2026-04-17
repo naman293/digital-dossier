@@ -189,6 +189,36 @@
   );
 }
 
+/* Film grain overlay */
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  opacity: 0.25;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.99' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.heavy-noise-mode .grain-overlay {
+  opacity: 0.9 !important;
+  mix-blend-mode: color-dodge !important;
+  animation: static-flicker 0.15s steps(2) infinite !important;
+  z-index: 99 !important;
+}
+
+.heavy-noise-mode .scanline-overlay {
+  opacity: 1 !important;
+}
+
+@keyframes static-flicker {
+  0% { transform: translate(0, 0) scale(1.05); }
+  25% { transform: translate(-1%, 2%) scale(1.05); }
+  50% { transform: translate(1%, -1%) scale(1.05); }
+  75% { transform: translate(-2%, -2%) scale(1.05); }
+  100% { transform: translate(2%, 1%) scale(1.05); }
+}
+
 /* Grid pattern background — kept subtle so it doesn't fight text */
 .grid-pattern {
   background-image:
@@ -247,7 +277,89 @@
   opacity: 1;
 }
 
-/* Crimson glow text */
+.glitch-hover {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.glitch-hover:hover::before,
+.glitch-hover:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.glitch-hover:hover::before {
+  color: #ff00c1;
+  z-index: -1;
+  animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+.glitch-hover:hover::after {
+  color: #00fff9;
+  z-index: -2;
+  animation: glitch-anim-2 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+    transform: translate(-2px);
+  }
+  40% {
+    clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+    transform: translate(2px);
+  }
+  60% {
+    clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+    transform: translate(-2px);
+  }
+  80% {
+    clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
+    transform: translate(2px);
+  }
+  100% {
+    clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+    transform: translate(2px);
+  }
+  40% {
+    clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+    transform: translate(-2px);
+  }
+  60% {
+    clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+    transform: translate(2px);
+  }
+  80% {
+    clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
+    transform: translate(-2px);
+  }
+  100% {
+    clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
+    transform: translate(0);
+  }
+}
+
 .text-glow {
   text-shadow:
     0 0 20px oklch(0.50 0.18 18 / 45%),
@@ -354,4 +466,13 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-crimson-dim);
+}
+
+/* ─────────────────────────────────────────────
+   KONAMI OVERRIDE - EASTER EGG (NEON GREEN)
+───────────────────────────────────────────── */
+.neon-override {
+  --color-crimson: oklch(0.85 0.3 140);
+  --color-crimson-dim: oklch(0.5 0.15 140);
+  --color-crimson-bright: oklch(0.95 0.35 140);
 }

@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-border py-8 px-6">
+    <footer className="border-t border-border pt-8 pb-24 px-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="font-mono text-[10px] text-label tracking-wider">
           NS://DOSSIER — © {new Date().getFullYear()} NAMAN SONI

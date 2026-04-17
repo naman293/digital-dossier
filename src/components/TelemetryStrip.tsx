@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import PingDisplay from "./PingDisplay";
 
 interface TelemetryStripProps {
   variant?: "wave" | "pulse" | "scan";
@@ -109,31 +110,35 @@ export default function TelemetryStrip({
       </motion.svg>
 
       {/* Left label */}
-      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 pointer-events-none">
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10">
         <span
           className="node-dot"
-          style={{ opacity: 0.4, background: "oklch(0.50 0.18 18)" }}
+          style={{ opacity: 0.8, background: "oklch(0.50 0.18 18)" }}
         />
         <span
           className="terminal-label"
-          style={{ opacity: 0.3, fontSize: "0.55rem" }}
+          style={{ opacity: 0.7, fontSize: "0.55rem" }}
         >
           SYS.TELEMETRY
         </span>
       </div>
 
-      {/* Right label */}
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 pointer-events-none">
-        <span
-          className="terminal-label"
-          style={{ opacity: 0.3, fontSize: "0.55rem" }}
-        >
-          NOMINAL
-        </span>
-        <span
-          className="node-dot status-pulse"
-          style={{ opacity: 0.5, background: "oklch(0.50 0.18 18)" }}
-        />
+      {/* Right label with Ping Display */}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 z-10">
+        <PingDisplay />
+        <span className="opacity-40 hidden sm:inline text-[8px] tracking-tighter text-crimson">|</span>
+        <div className="flex items-center gap-1.5 leading-none">
+          <span
+            className="terminal-label"
+            style={{ opacity: 0.7, fontSize: "0.55rem" }}
+          >
+            NOMINAL
+          </span>
+          <span
+            className="node-dot status-pulse"
+            style={{ opacity: 0.8, background: "oklch(0.50 0.18 18)" }}
+          />
+        </div>
       </div>
     </div>
   );

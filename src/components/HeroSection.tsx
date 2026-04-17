@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { soundEngine } from "@/lib/audio";
 import portrait from "@/assets/portrait.png";
 
 const metadata = [
@@ -8,7 +9,7 @@ const metadata = [
   { label: "CLEARANCE", value: "Open to Full-Time Roles" },
 ];
 
-export default function HeroSection() {
+export default function HeroSection({ isHackerElite = false }: { isHackerElite?: boolean }) {
   return (
     <section className="min-h-screen relative flex items-center justify-center px-6 pt-20 pb-16 overflow-hidden">
       {/* Grid bg */}
@@ -84,18 +85,27 @@ export default function HeroSection() {
             >
               <a
                 href="#projects"
-                className="font-mono text-xs tracking-wider border border-crimson text-crimson px-5 py-2.5 hover:bg-crimson/10 transition-colors"
+                onMouseEnter={() => soundEngine.playHover()}
+                onClick={() => soundEngine.playClick()}
+                className="font-mono text-xs font-semibold tracking-widest border border-crimson text-crimson px-6 py-3 hover:bg-crimson hover:text-background transition-colors"
               >
-                VIEW PROJECTS
+                VIEW DEPLOYMENTS
               </a>
-              <a
-                href="/resume"
-                className="font-mono text-xs tracking-wider border border-border text-muted-foreground px-5 py-2.5 hover:border-crimson-dim hover:text-foreground transition-colors"
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  soundEngine.playClick();
+                  window.dispatchEvent(new CustomEvent("trigger-resume"));
+                }}
+                onMouseEnter={() => soundEngine.playHover()}
+                className="group relative inline-flex items-center gap-3 border border-border px-6 py-3 font-mono text-xs font-semibold tracking-widest text-foreground transition-all hover:border-crimson hover:text-crimson"
               >
                 RESUME
-              </a>
+              </button>
               <a
                 href="#contact"
+                onMouseEnter={() => soundEngine.playHover()}
+                onClick={() => soundEngine.playClick()}
                 className="font-mono text-xs tracking-wider border border-border text-muted-foreground px-5 py-2.5 hover:border-crimson-dim hover:text-foreground transition-colors"
               >
                 CONTACT
@@ -109,6 +119,15 @@ export default function HeroSection() {
               transition={{ delay: 1.3 }}
               className="flex flex-wrap gap-2 mt-6"
             >
+              {isHackerElite && (
+                <motion.span
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="font-mono text-[9px] font-bold tracking-widest text-white border border-white px-2 py-1 bg-white/10 shadow-[0_0_10px_white]"
+                >
+                  [ ★ HACKER ELITE ]
+                </motion.span>
+              )}
               {["AVAILABLE FOR OPPORTUNITIES", "BUILDING PRODUCTION SYSTEMS"].map((badge) => (
                 <span
                   key={badge}

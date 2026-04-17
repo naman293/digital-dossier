@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import emailjs from "@emailjs/browser";
+import { soundEngine } from "@/lib/audio";
 import { SectionHeader } from "./AboutSection";
 
 type FormState = "idle" | "sending" | "sent" | "error";
 
 export default function ContactSection() {
-  const [form, setForm] = useState({ name: "", subject: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [formState, setFormState] = useState<FormState>("idle");
 
   const handleChange = (
@@ -14,30 +16,39 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.message.trim()) return;
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
 
     setFormState("sending");
 
-    // Compose email body
-    const body = encodeURIComponent(
-      `--- DOSSIER CONTACT TRANSMISSION ---\n\nFROM: ${form.name}\nSUBJECT: ${form.subject}\n\n${form.message}\n\n--- END OF TRANSMISSION ---`
-    );
-    const subject = encodeURIComponent(
-      form.subject || `[DOSSIER] Message from ${form.name}`
-    );
+    // Compose email metadata
+    const templateParams = {
+      from_name: form.name,
+      subject: form.subject || `[DOSSIER] Message from ${form.name}`,
+      message: form.message,
+      reply_to: form.email,
+    };
 
-    // Simulate brief delay then open email client
-    setTimeout(() => {
-      window.open(
-        `mailto:namansoni272003@gmail.com?subject=${subject}&body=${body}`,
-        "_self"
+    // Use EmailJS to send the transmission
+    emailjs
+      .send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_placeholder",
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_placeholder",
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "public_key_placeholder"
+      )
+      .then(
+        () => {
+          setFormState("sent");
+        },
+        (error) => {
+          console.error("Transmission failed:", error);
+          setFormState("error");
+        }
       );
-      setFormState("sent");
-    }, 800);
   };
 
   const reset = () => {
-    setForm({ name: "", subject: "", message: "" });
+    setForm({ name: "", email: "", subject: "", message: "" });
     setFormState("idle");
   };
 
@@ -84,6 +95,22 @@ export default function ContactSection() {
                     />
                   </div>
 
+                  {/* Email */}
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-[9px] tracking-[0.2em] text-label">
+                      REPLY-TO ADDRESS
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
+                      placeholder="Your email address..."
+                      className="w-full bg-surface/80 border border-border focus:border-crimson-dim outline-none px-3 py-2.5 font-mono text-xs text-foreground/90 placeholder:text-label/50 transition-colors"
+                    />
+                  </div>
+
                   {/* Subject */}
                   <div className="space-y-1.5">
                     <label className="font-mono text-[9px] tracking-[0.2em] text-label">
@@ -120,6 +147,8 @@ export default function ContactSection() {
                     disabled={formState === "sending"}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onMouseEnter={() => soundEngine.playHover()}
+                    onClick={(e) => { soundEngine.playClick(); if(formState !== "sending") {} }}
                     className="w-full font-mono text-xs tracking-wider border border-crimson text-crimson py-3 hover:bg-crimson/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {formState === "sending" ? (
@@ -153,7 +182,8 @@ export default function ContactSection() {
                   </p>
                   <div className="data-strip my-4" />
                   <button
-                    onClick={reset}
+                    onClick={() => { soundEngine.playClick(); reset(); }}
+                    onMouseEnter={() => soundEngine.playHover()}
                     className="font-mono text-[10px] tracking-[0.2em] text-label hover:text-crimson transition-colors"
                   >
                     [SEND NEW TRANSMISSION]
@@ -183,6 +213,8 @@ export default function ContactSection() {
                 href="https://www.linkedin.com/in/naman-soni-828158262/"
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => soundEngine.playHover()}
+                onClick={() => soundEngine.playClick()}
                 className="font-mono text-xs tracking-wider border border-crimson-dim text-crimson px-4 py-2.5 hover:bg-crimson/10 transition-colors text-center"
               >
                 OPEN LINKEDIN PROFILE ↗

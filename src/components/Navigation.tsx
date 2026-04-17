@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { soundEngine } from "@/lib/audio";
 
 const navLinks = [
   { label: "ABOUT", href: "#about", id: "about" },
@@ -93,17 +94,26 @@ export default function Navigation() {
               </a>
             );
           })}
-          <Link
-            to="/resume"
-            className="font-mono text-[10px] tracking-[0.2em] border border-crimson-dim text-crimson px-3 py-1.5 hover:bg-crimson/10 transition-colors"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              soundEngine.playClick();
+              window.dispatchEvent(new CustomEvent("trigger-resume"));
+            }}
+            onMouseEnter={() => soundEngine.playHover()}
+            className="font-mono text-[10px] tracking-[0.2em] border border-crimson-dim text-crimson px-3 py-1.5 hover:bg-crimson/10 transition-colors cursor-pointer"
           >
             RESUME
-          </Link>
+          </button>
         </div>
 
         {/* Mobile toggle */}
         <button
-          onClick={() => setMobileOpen(!mobileOpen)}
+          onClick={() => {
+            soundEngine.playClick();
+            setMobileOpen(!mobileOpen);
+          }}
+          onMouseEnter={() => soundEngine.playHover()}
           className="md:hidden font-mono text-[10px] tracking-[0.2em] text-muted-foreground"
         >
           {mobileOpen ? "[CLOSE]" : "[MENU]"}
@@ -121,6 +131,7 @@ export default function Navigation() {
             <a
               key={link.label}
               href={link.href}
+              onMouseEnter={() => soundEngine.playHover()}
               onClick={(e) => handleNavClick(e, link.href)}
               className={`block py-2 font-mono text-xs tracking-[0.2em] transition-colors ${
                 activeSection === link.id
@@ -131,13 +142,18 @@ export default function Navigation() {
               {activeSection === link.id ? "▸ " : ""}{link.label}
             </a>
           ))}
-          <Link
-            to="/resume"
-            onClick={() => setMobileOpen(false)}
-            className="block py-2 font-mono text-xs tracking-[0.2em] text-crimson"
+          <button
+            onMouseEnter={() => soundEngine.playHover()}
+            onClick={(e) => {
+              e.preventDefault();
+              soundEngine.playClick();
+              setMobileOpen(false);
+              window.dispatchEvent(new CustomEvent("trigger-resume"));
+            }}
+            className="block w-full text-left py-2 font-mono text-xs tracking-[0.2em] text-crimson cursor-pointer"
           >
-            RESUME ↗
-          </Link>
+            RESUME
+          </button>
         </motion.div>
       )}
     </motion.nav>

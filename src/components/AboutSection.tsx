@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import HoverDecryptText from "./HoverDecryptText";
 
 const tags = [
   "SYSTEMS ARCHITECTURE",
@@ -20,19 +21,14 @@ export default function AboutSection() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="dossier-panel p-6"
+            className="dossier-panel p-6 md:p-8 h-full"
           >
-            <div className="terminal-label mb-4">SUBJECT BRIEF</div>
+            <div className="terminal-label mb-6">SUBJECT BRIEF</div>
             <p className="font-body text-sm leading-relaxed mb-4" style={{ color: "oklch(0.84 0.009 80)" }}>
-              I'm a final-year software engineer at The LNM Institute of Information Technology, Rajasthan.
-              I focus on backend systems, APIs, and scalable application design — building structured systems
-              with clean architecture, handling state, and solving real-world problems with performance and
-              reliability in mind.
+              <HoverDecryptText text="I'm a final-year software engineer at The LNM Institute of Information Technology, Rajasthan. I focus on backend systems, APIs, and scalable application design — building structured systems with clean architecture, handling state, and solving real-world problems with performance and reliability in mind." />
             </p>
             <p className="font-body text-sm leading-relaxed" style={{ color: "oklch(0.84 0.009 80)" }}>
-              I use AI as a practical tool to enhance engineering workflows and system capabilities.
-              My interests lie at the intersection of system architecture and product experience.
-              I think in systems, build with intention, and ship things that work.
+              <HoverDecryptText text="I use AI as a practical tool to enhance engineering workflows and system capabilities. My interests lie at the intersection of system architecture and product experience. I think in systems, build with intention, and ship things that work." />
             </p>
           </motion.div>
 

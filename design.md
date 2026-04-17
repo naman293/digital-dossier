@@ -380,5 +380,10 @@ Use `whileInView` + `viewport={{ once: true }}` for scroll-triggered animations.
 - **Dithered page transitions** — noise-based dissolve between routes
 - **Audio feedback** — subtle mechanical click on button hover
 - **Glitch effects** — rare displacement map filter on hover of dossier titles
-- **Cursor react** — ambient magnetic interference effect that follows cursor
 - **Biometric motifs** — faint fingerprint/retinal scan in Hero section
+
+---
+
+## Persistent Style Keywords
+Lock these keywords as the core identity of the project:
+`dark dossier UI`, `technical identity card`, `CRT terminal interface`, `ASCII telemetry`, `signal-conditioning control board`, `industrial panel system`, `classified subject file`, `mono-label typography`, `diagnostic dashboard`, `circuit-routing motifs`, `waveform strips`, `surveillance-console framing`, `engineering schematic minimalism`, `coder-editorial atmosphere`, `high-contrast noir developer portfolio`.
