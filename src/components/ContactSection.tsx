@@ -53,7 +53,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 px-6">
+    <section id="contact" className="py-16 md:py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <SectionHeader label="06" title="ESTABLISH CONTACT" />
 
@@ -98,7 +98,7 @@ export default function ContactSection() {
                   {/* Email */}
                   <div className="space-y-1.5">
                     <label className="font-mono text-[9px] tracking-[0.2em] text-label">
-                      REPLY-TO ADDRESS
+                      YOUR EMAIL
                     </label>
                     <input
                       type="email"
@@ -233,10 +233,10 @@ export default function ContactSection() {
               ].map(({ label, value }) => (
                 <div
                   key={label}
-                  className="flex items-center justify-between text-xs font-mono"
+                  className="flex items-start justify-between gap-2 text-xs font-mono flex-wrap"
                 >
-                  <span className="text-label tracking-wider">{label}</span>
-                  <span className="text-foreground/70">{value}</span>
+                  <span className="text-label tracking-wider shrink-0">{label}</span>
+                  <span className="text-foreground/70 text-right">{value}</span>
                 </div>
               ))}
               <div className="data-strip mt-2" />

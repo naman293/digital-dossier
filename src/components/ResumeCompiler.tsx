@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { soundEngine } from "@/lib/audio";
 
+import { useNavigate } from "@tanstack/react-router";
+
 const BUILD_LOGS = [
   "[  OK  ] Initializing gcc v14.0.2... ",
   "[  OK  ] Allocating memory core buffers...",
@@ -17,6 +19,7 @@ const BUILD_LOGS = [
 export default function ResumeCompiler({ onComplete }: { onComplete: () => void }) {
   const [logs, setLogs] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentIndex < BUILD_LOGS.length) {
@@ -28,7 +31,7 @@ export default function ResumeCompiler({ onComplete }: { onComplete: () => void 
       
       return () => clearTimeout(timeout);
     } else {
-      // Once build is complete, wait 1 second, then trigger download
+      // Once build is complete, wait 1 second, then trigger download and redirect
       const finishTimeout = setTimeout(() => {
         
         // Native browser trick to force file download programmatically 
@@ -41,10 +44,12 @@ export default function ResumeCompiler({ onComplete }: { onComplete: () => void 
 
         // Tell parent to close modal
         onComplete();
+        // Redirect to the resume page
+        navigate({ to: "/resume" });
       }, 1000);
       return () => clearTimeout(finishTimeout);
     }
-  }, [currentIndex, onComplete]);
+  }, [currentIndex, onComplete, navigate]);
 
   return (
     <motion.div 

@@ -34,11 +34,11 @@ const skillGroups = [
 
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-24 px-6">
+    <section id="skills" className="py-16 md:py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <SectionHeader label="04" title="SYSTEM CAPABILITIES" />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
           {skillGroups.map((group, i) => (
             <motion.div
               key={group.category}

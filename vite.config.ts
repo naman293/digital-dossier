@@ -11,6 +11,9 @@ export default defineConfig({
   tanstackStart: {
     prerender: {
       enabled: true,
+      // Exclude binary files like PDFs from prerendering.
+      // Without this, the crawler overwrites the PDF with HTML, corrupting it.
+      filter: (page: { path: string }) => !page.path.endsWith(".pdf"),
     },
   },
 });

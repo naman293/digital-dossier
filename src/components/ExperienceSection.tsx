@@ -40,7 +40,7 @@ const timeline = [
 
 export default function ExperienceSection() {
   return (
-    <section id="experience" className="py-24 px-6 relative">
+    <section id="experience" className="py-16 md:py-24 px-6 relative">
       <div className="absolute inset-0 grid-pattern opacity-10" />
       <div className="relative max-w-6xl mx-auto">
         <SectionHeader label="05" title="MISSION LOG // TIMELINE" />

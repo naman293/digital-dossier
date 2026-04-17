@@ -18,7 +18,7 @@ export default function NoiseToggle({
         onToggle();
       }}
       onMouseEnter={() => soundEngine.playHover()}
-      className="fixed bottom-6 left-6 z-50 flex items-center gap-2 font-mono text-[9px] tracking-widest text-label hover:text-crimson transition-colors group"
+      className="hidden sm:flex fixed bottom-6 left-6 z-50 items-center gap-2 font-mono text-[9px] tracking-widest text-label hover:text-crimson transition-colors group"
     >
       <span className={`w-2 h-2 rounded-full transition-colors ${enabled ? 'bg-crimson status-pulse' : 'bg-surface border border-border group-hover:border-crimson'}`} />
       SYS.NOISE_GEN // {enabled ? "ON" : "OFF"}

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SectionHeader } from "./AboutSection";
 import HoverDecryptText from "./HoverDecryptText";
@@ -103,6 +103,7 @@ function ProjectCard({
   onLift: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isTouch] = useState(() => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -140,20 +141,20 @@ function ProjectCard({
       transition={{ delay: index * 0.1 }}
       whileHover="hover"
       animate="rest"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={isTouch ? undefined : handleMouseMove}
+      onMouseLeave={isTouch ? undefined : handleMouseLeave}
       onMouseDown={onLift}
-      drag
-      dragConstraints={{ left: -300, right: 300, top: -300, bottom: 300 }}
+      drag={isTouch ? false : true}
+      dragConstraints={isTouch ? undefined : { left: -300, right: 300, top: -300, bottom: 300 }}
       dragElastic={0.2}
       whileDrag={{ scale: 1.02, cursor: "grabbing" }}
-      style={{
+      style={isTouch ? {} : {
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
         zIndex,
       }}
-      className="group dossier-panel p-6 md:p-8 flex flex-col h-full perspective-1000 relative overflow-hidden bg-surface cursor-grab"
+      className="group dossier-panel p-5 md:p-8 flex flex-col h-full perspective-1000 relative overflow-hidden bg-surface cursor-default md:cursor-grab"
     >
       {/* Animated subtle elevation glow */}
       <motion.div
@@ -246,7 +247,7 @@ export default function ProjectsSection() {
   const [resetKey, setResetKey] = useState(0);
 
   return (
-    <section id="projects" className="py-24 px-6 relative z-10 w-full overflow-hidden">
+    <section id="projects" className="py-16 md:py-24 px-6 relative z-10 w-full overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-15" />
       <div className="max-w-6xl mx-auto relative">
         <div className="flex items-center gap-4 mb-2">

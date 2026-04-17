@@ -12,7 +12,7 @@ const tags = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-24 px-6 relative">
+    <section id="about" className="py-16 md:py-24 px-6 relative">
       <div className="max-w-6xl mx-auto">
         <SectionHeader label="02" title="PROFILE // ABOUT" />
 
@@ -62,9 +62,9 @@ export default function AboutSection() {
                 { label: "ENVIRONMENT", value: "FAST-PACED / AMBIGUOUS" },
                 { label: "APPROACH", value: "SYSTEMS-FIRST" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-label tracking-wider">{item.label}</span>
-                  <span style={{ color: "oklch(0.86 0.009 80)" }}>{item.value}</span>
+                <div key={item.label} className="flex items-start justify-between gap-2 text-xs font-mono flex-wrap">
+                  <span className="text-label tracking-wider shrink-0">{item.label}</span>
+                  <span className="text-right" style={{ color: "oklch(0.86 0.009 80)" }}>{item.value}</span>
                 </div>
               ))}
             </div>

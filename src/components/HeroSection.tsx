@@ -42,7 +42,7 @@ export default function HeroSection({ isHackerElite = false }: { isHackerElite?:
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="font-display text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-2"
+              className="font-display text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-2"
             >
               NAMAN <span className="text-crimson text-glow">SONI</span>
             </motion.h1>
@@ -81,13 +81,13 @@ export default function HeroSection({ isHackerElite = false }: { isHackerElite?:
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="flex flex-wrap gap-3"
+              className="flex flex-col sm:flex-row flex-wrap gap-3"
             >
               <a
                 href="#projects"
                 onMouseEnter={() => soundEngine.playHover()}
                 onClick={() => soundEngine.playClick()}
-                className="font-mono text-xs font-semibold tracking-widest border border-crimson text-crimson px-6 py-3 hover:bg-crimson hover:text-background transition-colors"
+                className="font-mono text-xs font-semibold tracking-widest border border-crimson text-crimson px-6 py-3 hover:bg-crimson hover:text-background transition-colors text-center"
               >
                 VIEW DEPLOYMENTS
               </a>
@@ -98,7 +98,7 @@ export default function HeroSection({ isHackerElite = false }: { isHackerElite?:
                   window.dispatchEvent(new CustomEvent("trigger-resume"));
                 }}
                 onMouseEnter={() => soundEngine.playHover()}
-                className="group relative inline-flex items-center gap-3 border border-border px-6 py-3 font-mono text-xs font-semibold tracking-widest text-foreground transition-all hover:border-crimson hover:text-crimson"
+                className="group relative inline-flex items-center justify-center gap-3 border border-border px-6 py-3 font-mono text-xs font-semibold tracking-widest text-foreground transition-all hover:border-crimson hover:text-crimson"
               >
                 RESUME
               </button>
@@ -106,7 +106,7 @@ export default function HeroSection({ isHackerElite = false }: { isHackerElite?:
                 href="#contact"
                 onMouseEnter={() => soundEngine.playHover()}
                 onClick={() => soundEngine.playClick()}
-                className="font-mono text-xs tracking-wider border border-border text-muted-foreground px-5 py-2.5 hover:border-crimson-dim hover:text-foreground transition-colors"
+                className="font-mono text-xs tracking-wider border border-border text-muted-foreground px-5 py-2.5 hover:border-crimson-dim hover:text-foreground transition-colors text-center"
               >
                 CONTACT
               </a>
