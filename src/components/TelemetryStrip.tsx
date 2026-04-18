@@ -4,14 +4,44 @@ import PingDisplay from "./PingDisplay";
 interface TelemetryStripProps {
   variant?: "wave" | "pulse" | "scan";
   className?: string;
+  isMatrixMode?: boolean;
 }
 
 export default function TelemetryStrip({
   variant = "wave",
   className = "",
+  isMatrixMode = false,
 }: TelemetryStripProps) {
-  // viewBox is "0 0 1280 40" — ALL y values kept strictly between 8 and 32
-  // so peaks never escape the container and bleed into sections.
+
+  /* ── Matrix mode: minimal green separator ── */
+  if (isMatrixMode) {
+    const labels: Record<string, string> = {
+      wave: "── SEGMENT.BREAK ──",
+      pulse: "── DATA.STREAM ──",
+      scan: "── SCAN.COMPLETE ──",
+    };
+
+    return (
+      <div
+        className={`relative w-full ${className}`}
+        style={{
+          height: "32px",
+          background: "rgba(0, 5, 0, 0.5)",
+          borderTop: "1px solid rgba(0, 255, 65, 0.06)",
+          borderBottom: "1px solid rgba(0, 255, 65, 0.06)",
+          overflow: "hidden",
+        }}
+      >
+        <div className="absolute inset-0 flex items-center justify-center font-mono text-[8px] tracking-[0.3em]"
+          style={{ color: "rgba(0, 255, 65, 0.2)" }}
+        >
+          {labels[variant]}
+        </div>
+      </div>
+    );
+  }
+
+  /* ── Normal Dossier: original animated telemetry ── */
   const wavePath =
     "M0,20 C20,10 40,30 60,20 C80,10 100,30 120,20 C140,10 160,30 180,20 C200,10 220,30 240,20 C260,10 280,30 300,20 C320,10 340,30 360,20 C380,10 400,30 420,20 C440,10 460,30 480,20 C500,10 520,30 540,20 C560,10 580,30 600,20 C620,10 640,30 660,20 C680,10 700,30 720,20 C740,10 760,30 780,20 C800,10 820,30 840,20 C860,10 880,30 900,20 C920,10 940,30 960,20 C980,10 1000,30 1020,20 C1040,10 1060,30 1080,20 C1100,10 1120,30 1140,20 C1160,10 1180,30 1200,20 C1220,10 1250,30 1280,20";
 
@@ -24,8 +54,6 @@ export default function TelemetryStrip({
   const paths = { wave: wavePath, pulse: pulsePath, scan: scanPath };
   const selectedPath = paths[variant];
 
-  // Unique IDs per instance — prevents SVG gradient/filter id collisions
-  // when multiple strips render on the same page.
   const uid = `${variant}-${Math.random().toString(36).slice(2, 7)}`;
 
   return (
@@ -33,16 +61,12 @@ export default function TelemetryStrip({
       className={`relative w-full ${className}`}
       style={{
         height: "48px",
-        // Solid background — same as page bg — creates a hard boundary
-        // so adjacent section content never shows through
         background: "oklch(0.13 0.005 260)",
         borderTop: "1px solid oklch(0.25 0.005 260)",
         borderBottom: "1px solid oklch(0.25 0.005 260)",
-        // overflow hidden ensures glow blur can't escape vertically
         overflow: "hidden",
       }}
     >
-      {/* Subtle depth gradient inside the strip */}
       <div
         className="absolute inset-0"
         style={{
@@ -52,11 +76,9 @@ export default function TelemetryStrip({
         }}
       />
 
-      {/* SVG telemetry line — fills the strip exactly, no offset */}
       <motion.svg
         width="100%"
         height="48"
-        // viewBox tightly wraps y=8..32, giving 4px safety margin top & bottom
         viewBox="0 0 1280 40"
         preserveAspectRatio="none"
         className="absolute inset-0 w-full h-full"
@@ -66,7 +88,6 @@ export default function TelemetryStrip({
         transition={{ duration: 0.8 }}
       >
         <defs>
-          {/* Horizontal gradient: fades at both ends so it blends into page */}
           <linearGradient id={`tgr-${uid}`} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%"   stopColor="oklch(0.50 0.18 18)" stopOpacity="0" />
             <stop offset="10%"  stopColor="oklch(0.50 0.18 18)" stopOpacity="0.55" />
@@ -75,7 +96,6 @@ export default function TelemetryStrip({
             <stop offset="100%" stopColor="oklch(0.50 0.18 18)" stopOpacity="0" />
           </linearGradient>
 
-          {/* Glow filter — clamped vertically so it can't paint outside the SVG */}
           <filter id={`tgl-${uid}`} x="0%" y="0%" width="100%" height="100%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur" />
             <feMerge>
@@ -85,7 +105,6 @@ export default function TelemetryStrip({
           </filter>
         </defs>
 
-        {/* Background glow pass — thick, soft, low opacity */}
         <path
           d={selectedPath}
           fill="none"
@@ -95,7 +114,6 @@ export default function TelemetryStrip({
           opacity="0.25"
         />
 
-        {/* Foreground sharp animated line */}
         <motion.path
           d={selectedPath}
           fill="none"
@@ -109,7 +127,6 @@ export default function TelemetryStrip({
         />
       </motion.svg>
 
-      {/* Left label */}
       <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10">
         <span
           className="node-dot"
@@ -123,7 +140,6 @@ export default function TelemetryStrip({
         </span>
       </div>
 
-      {/* Right label with Ping Display */}
       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 z-10">
         <PingDisplay />
         <span className="opacity-40 hidden sm:inline text-[8px] tracking-tighter text-crimson">|</span>

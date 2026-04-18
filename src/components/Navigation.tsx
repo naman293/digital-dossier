@@ -11,7 +11,7 @@ const navLinks = [
   { label: "CONTACT", href: "#contact", id: "contact" },
 ];
 
-export default function Navigation() {
+export default function Navigation({ isMatrixMode = false }: { isMatrixMode?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
@@ -62,7 +62,7 @@ export default function Navigation() {
       transition={{ duration: 0.6, delay: 0.2 }}
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : ""
-      }`}
+      } ${isMatrixMode ? "matrix-nav" : ""}`}
     >
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
         <a href="#" className="font-mono text-xs font-semibold tracking-widest text-crimson">

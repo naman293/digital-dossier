@@ -21,6 +21,10 @@ import CommandPalette from "@/components/CommandPalette";
 import BackToTop from "@/components/BackToTop";
 import { soundEngine } from "@/lib/audio";
 import { useKonamiCode } from "@/hooks/useKonamiCode";
+import { useMultiSequenceCode } from "@/hooks/useSequenceCode";
+import MatrixRain from "@/components/MatrixRain";
+import MatrixFragment from "@/components/MatrixFragment";
+import MatrixHUD from "@/components/MatrixHUD";
 
 export const Route = createFileRoute("/")(
   {
@@ -49,6 +53,8 @@ function Index() {
   const [showMinigame, setShowMinigame] = useState(false);
   const [isHackerElite, setIsHackerElite] = useState(false);
   const [heavyNoise, setHeavyNoise] = useState(false);
+  const [backgroundMode, setBackgroundMode] = useState<"grid" | "matrix">("grid");
+  const isMatrixMode = backgroundMode === "matrix";
   const { success: konamiSuccess, reset: resetKonami } = useKonamiCode();
 
   // Watch for Konami trigger
@@ -84,6 +90,18 @@ function Index() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Matrix Reality Triggers
+  useMultiSequenceCode({
+    "reality": () => {
+      setBackgroundMode("matrix");
+      soundEngine.playClick();
+    },
+    "escape": () => {
+      setBackgroundMode("grid");
+      soundEngine.playClick();
+    }
+  });
+
   // Global trigger for resume compile
   useEffect(() => {
     const handleTrigger = () => setCompilerOpen(true);
@@ -92,7 +110,10 @@ function Index() {
   }, []);
 
   return (
-    <div className={`relative lg:cursor-none ${heavyNoise ? 'heavy-noise-mode' : ''}`}>
+    <div 
+      className={`relative lg:cursor-none ${heavyNoise ? 'heavy-noise-mode' : ''}`}
+      data-matrix-mode={isMatrixMode}
+    >
       <CustomCursor />
       
       <AnimatePresence>
@@ -115,7 +136,8 @@ function Index() {
       <CommandPalette />
       <BackToTop />
       
-      <GridBackground />
+      {backgroundMode === "grid" ? <GridBackground /> : <MatrixRain />}
+      {isMatrixMode && <MatrixHUD />}
       
       {heavyNoise && (
         <>
@@ -127,19 +149,31 @@ function Index() {
       <NoiseToggle enabled={heavyNoise} onToggle={() => setHeavyNoise(!heavyNoise)} />
       <ScrollProgress />
 
-      <Navigation />
-      <HeroSection isHackerElite={isHackerElite} />
-      <TelemetryStrip variant="wave" />
-      <AboutSection />
-      <TelemetryStrip variant="pulse" />
-      <ProjectsSection />
-      <TelemetryStrip variant="scan" />
-      <SkillsSection />
-      <TelemetryStrip variant="wave" />
-      <ExperienceSection />
-      <TelemetryStrip variant="pulse" />
-      <ContactSection />
-      <Footer />
+      <Navigation isMatrixMode={isMatrixMode} />
+      
+      <HeroSection isHackerElite={isHackerElite} isMatrixMode={isMatrixMode} />
+
+      <TelemetryStrip variant="wave" isMatrixMode={isMatrixMode} />
+
+      <AboutSection isMatrixMode={isMatrixMode} />
+
+      <TelemetryStrip variant="pulse" isMatrixMode={isMatrixMode} />
+
+      <ProjectsSection isMatrixMode={isMatrixMode} />
+
+      <TelemetryStrip variant="scan" isMatrixMode={isMatrixMode} />
+
+      <SkillsSection isMatrixMode={isMatrixMode} />
+
+      <TelemetryStrip variant="wave" isMatrixMode={isMatrixMode} />
+
+      <ExperienceSection isMatrixMode={isMatrixMode} />
+
+      <TelemetryStrip variant="pulse" isMatrixMode={isMatrixMode} />
+
+      <ContactSection isMatrixMode={isMatrixMode} />
+
+      <Footer isMatrixMode={isMatrixMode} />
     </div>
   );
 }

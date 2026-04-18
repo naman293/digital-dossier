@@ -1,7 +1,8 @@
-import { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { SectionHeader } from "./AboutSection";
 import HoverDecryptText from "./HoverDecryptText";
+import MatrixFragment from "./MatrixFragment";
 import { soundEngine } from "@/lib/audio";
 
 const projects = [
@@ -80,7 +81,6 @@ app.post('/api/vote', async (req, res) => {
     snippet: `// 3D Canvas Rigging
 useFrame((state) => {
   if (batmanRef.current) {
-    // Parallax mouse binding
     batmanRef.current.rotation.y = THREE.MathUtils.lerp(
       batmanRef.current.rotation.y,
       (mouse.x * Math.PI) / 4,
@@ -91,45 +91,216 @@ useFrame((state) => {
   },
 ];
 
-function ProjectCard({ 
-  project, 
-  index, 
-  zIndex, 
-  onLift 
-}: { 
-  project: typeof projects[0]; 
-  index: number; 
+/* ── Matrix Projects: ls -la style file catalog ── */
+function MatrixProjects() {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  return (
+    <section id="projects" className="py-16 md:py-24 px-6 relative z-10 w-full overflow-hidden">
+      <div className="max-w-4xl mx-auto font-mono text-xs">
+        {/* Terminal header */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mb-4"
+          style={{ color: "rgba(0,255,65,0.5)" }}
+        >
+          <div><span style={{ color: "#00ff41" }}>naman@reality</span>:~/projects$ ls -la</div>
+        </motion.div>
+
+        {/* Column headers — like ls output */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mb-2 pb-2"
+          style={{
+            color: "rgba(0,255,65,0.35)",
+            borderBottom: "1px solid rgba(0,255,65,0.1)",
+          }}
+        >
+          <div className="hidden md:grid grid-cols-[80px_80px_60px_1fr_100px]  gap-3">
+            <span>STATUS</span>
+            <span>TYPE</span>
+            <span>YEAR</span>
+            <span>NAME</span>
+            <span className="text-right">ACTIONS</span>
+          </div>
+        </motion.div>
+
+        {/* Project rows */}
+        <div className="space-y-1">
+          {projects.map((project, i) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              {/* Main row */}
+              <div
+                onClick={() => {
+                  soundEngine.playClick();
+                  setExpandedId(expandedId === project.id ? null : project.id);
+                }}
+                onMouseEnter={() => soundEngine.playHover()}
+                className="cursor-pointer py-2 px-2 transition-all hover:bg-[rgba(0,255,65,0.05)]"
+                style={{
+                  borderLeft: expandedId === project.id
+                    ? "2px solid #00ff41"
+                    : "2px solid transparent",
+                }}
+              >
+                {/* Desktop grid */}
+                <div className="hidden md:grid grid-cols-[80px_80px_60px_1fr_100px] gap-3 items-center">
+                  <span
+                    className="text-[9px] tracking-wider"
+                    style={{
+                      color: project.status === "ACTIVE" ? "#00ff41" : "rgba(0,255,65,0.4)",
+                    }}
+                  >
+                    ● {project.status}
+                  </span>
+                  <span style={{ color: "rgba(0,255,65,0.4)" }}>{project.type}</span>
+                  <span style={{ color: "rgba(0,255,65,0.3)" }}>{project.year}</span>
+                  <span style={{ color: "#00ff41" }}>
+                    {project.name}/<span style={{ color: "rgba(0,255,65,0.5)" }}> — {project.summary.slice(0, 60)}...</span>
+                  </span>
+                  <span className="text-right">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ color: "rgba(0,255,65,0.5)" }}
+                      className="hover:underline"
+                    >
+                      [source]
+                    </a>
+                  </span>
+                </div>
+
+                {/* Mobile view */}
+                <div className="md:hidden">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="text-[9px]"
+                      style={{
+                        color: project.status === "ACTIVE" ? "#00ff41" : "rgba(0,255,65,0.4)",
+                      }}
+                    >●</span>
+                    <span style={{ color: "#00ff41" }}>{project.name}/</span>
+                    <span style={{ color: "rgba(0,255,65,0.3)" }}>({project.year})</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Expanded: shows code snippet */}
+              {expandedId === project.id && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="ml-4 mb-4 overflow-hidden"
+                  style={{
+                    borderLeft: "1px solid rgba(0,255,65,0.1)",
+                    paddingLeft: "12px",
+                  }}
+                >
+                  <div className="mt-2 space-y-2">
+                    <div style={{ color: "rgba(0,255,65,0.4)" }}>
+                      {"// "}{project.summary}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.stack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-[9px] px-1.5 py-0.5"
+                          style={{
+                            color: "#00ff41",
+                            border: "1px solid rgba(0,255,65,0.15)",
+                            background: "rgba(0,255,65,0.03)",
+                          }}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    {/* Code snippet */}
+                    <pre
+                      className="text-[10px] leading-relaxed mt-2 p-3 overflow-x-auto"
+                      style={{
+                        color: "rgba(0,255,65,0.6)",
+                        background: "rgba(0,5,0,0.5)",
+                        border: "1px solid rgba(0,255,65,0.08)",
+                      }}
+                    >
+                      {project.snippet}
+                    </pre>
+                    <div className="flex gap-3 mt-2">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => soundEngine.playClick()}
+                        className="text-[10px] tracking-wider"
+                        style={{ color: "#00ff41" }}
+                      >
+                        $ git clone {project.github.replace("https://github.com/", "")}
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom summary */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-4 pt-2"
+          style={{
+            color: "rgba(0,255,65,0.35)",
+            borderTop: "1px solid rgba(0,255,65,0.08)",
+          }}
+        >
+          total {projects.length} — click to expand source
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Normal Dossier Projects (original card layout) ── */
+function ProjectCard({
+  project,
+  index,
+  zIndex,
+  onLift,
+  activeCard,
+}: {
+  project: typeof projects[0];
+  index: number;
   zIndex: number;
   onLift: () => void;
+  activeCard: string | null;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isTouch] = useState(() => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+  const cardVariants = {
+    rest: { rotateX: 0, rotateY: 0, scale: 1 },
+    hover: {
+      rotateX: isTouch ? 0 : 5,
+      rotateY: isTouch ? 0 : 5,
+      scale: 1.01,
+      transition: { duration: 0.3, ease: [0, 0, 0.58, 1] as const },
+    },
   };
 
   return (
@@ -140,50 +311,13 @@ function ProjectCard({
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
       whileHover="hover"
-      animate="rest"
-      onMouseMove={isTouch ? undefined : handleMouseMove}
-      onMouseLeave={isTouch ? undefined : handleMouseLeave}
+      animate={activeCard === project.id ? "hover" : "rest"}
       onMouseDown={onLift}
-      drag={isTouch ? false : true}
-      dragConstraints={isTouch ? undefined : { left: -300, right: 300, top: -300, bottom: 300 }}
-      dragElastic={0.2}
-      whileDrag={{ scale: 1.02, cursor: "grabbing" }}
-      style={isTouch ? {} : {
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-        zIndex,
-      }}
-      className="group dossier-panel p-5 md:p-8 flex flex-col h-full perspective-1000 relative overflow-hidden bg-surface cursor-default md:cursor-grab"
+      variants={cardVariants}
+      style={{ transformStyle: "preserve-3d", zIndex }}
+      className="group dossier-panel p-5 md:p-8 flex flex-col h-full relative overflow-hidden bg-surface cursor-default"
     >
-      {/* Animated subtle elevation glow */}
-      <motion.div
-        variants={{
-          rest: { opacity: 0 },
-          hover: { opacity: 1, transition: { duration: 0.2 } },
-        }}
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          boxShadow: "0 0 24px 4px oklch(0.50 0.18 18 / 10%)",
-        }}
-      />
-
-      {/* Sweep shine on hover */}
-      <motion.div
-        variants={{
-          rest: { x: "-120%", opacity: 0 },
-          hover: {
-            x: "220%",
-            opacity: 1,
-            transition: { duration: 1.2, ease: "easeInOut" },
-          },
-        }}
-        className="absolute inset-y-0 w-1/2 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(105deg, transparent 0%, oklch(0.55 0.22 18 / 6%) 50%, transparent 100%)",
-        }}
-      />
+      <div className="absolute inset-0 pointer-events-none project-card-glare" />
 
       <div className="flex flex-col mb-4 bg-transparent border-none relative z-10">
         <div className="flex justify-between items-start mb-2">
@@ -196,18 +330,21 @@ function ProjectCard({
           </span>
         </div>
       </div>
-      <p
-        className="font-mono text-xs leading-relaxed mb-8 flex-grow relative z-10"
-        style={{ color: "oklch(0.72 0.01 260)" }}
-      >
-        <HoverDecryptText text={project.summary} />
-      </p>
+
+      <div className="flex-grow">
+        <p
+          className="font-mono text-xs leading-relaxed mb-8"
+          style={{ color: "oklch(0.72 0.01 260)" }}
+        >
+          <HoverDecryptText text={project.summary} />
+        </p>
+      </div>
 
       <div className="flex flex-wrap gap-1.5 mb-8 relative z-10">
         {project.stack.map((tech) => (
           <span
             key={tech}
-            className="font-mono text-[10px] tracking-wider border border-border px-2 py-1 text-foreground/70"
+            className="font-mono text-[10px] tracking-wider border border-border px-2 py-1 text-foreground/70 block"
           >
             {tech}
           </span>
@@ -242,7 +379,7 @@ function ProjectCard({
   );
 }
 
-export default function ProjectsSection() {
+function DossierProjects() {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const [resetKey, setResetKey] = useState(0);
 
@@ -251,9 +388,9 @@ export default function ProjectsSection() {
       <div className="absolute inset-0 grid-pattern opacity-15" />
       <div className="max-w-6xl mx-auto relative">
         <div className="flex items-center gap-4 mb-2">
-          <button 
+          <button
             onClick={() => {
-              setResetKey(prev => prev + 1);
+              setResetKey((prev) => prev + 1);
               soundEngine.playClick();
             }}
             aria-label="Restore Grid"
@@ -265,22 +402,28 @@ export default function ProjectsSection() {
             </svg>
           </button>
           <div className="flex-grow">
-            <SectionHeader label="03" title="DEPLOYMENTS // CASE FILES" />
+            <SectionHeader label="03" title="DEPLOYMENTS // CASE FILES" isMatrixMode={false} />
           </div>
         </div>
 
         <div key={resetKey} className="grid md:grid-cols-2 gap-6 mt-10">
           {projects.map((project, i) => (
-            <ProjectCard 
-              key={project.id} 
-              project={project} 
-              index={i} 
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={i}
               zIndex={activeCard === project.id ? 50 : 1}
               onLift={() => setActiveCard(project.id)}
+              activeCard={activeCard}
             />
           ))}
         </div>
       </div>
     </section>
   );
+}
+
+export default function ProjectsSection({ isMatrixMode = false }: { isMatrixMode?: boolean }) {
+  if (isMatrixMode) return <MatrixProjects />;
+  return <DossierProjects />;
 }

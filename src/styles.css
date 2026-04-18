@@ -477,3 +477,252 @@
   --color-crimson-dim: oklch(0.5 0.15 140);
   --color-crimson-bright: oklch(0.95 0.35 140);
 }
+
+/* ═══════════════════════════════════════════════
+   ██  MATRIX REALITY MODE — RED PILL ZONE  ██
+   ═══════════════════════════════════════════════
+   // Activated via keyboard sequence: "reality"
+   // Exit via: "escape"
+   // Only those who seek the truth shall find it.
+*/
+
+/* ── TOKEN OVERRIDES ── */
+[data-matrix-mode="true"] {
+  --background: #0a0a0a;
+  --foreground: #00ff41;
+  --crimson: #00ff41;
+  --crimson-dim: #00aa2a;
+  --border: rgba(0, 255, 65, 0.18);
+  --surface: rgba(0, 15, 0, 0.9);
+  --surface-raised: rgba(0, 20, 0, 0.8);
+  --label: rgba(0, 255, 65, 0.6);
+  --muted-foreground: rgba(0, 255, 65, 0.45);
+  --body: rgba(0, 255, 65, 0.75);
+  --meta: rgba(0, 255, 65, 0.5);
+}
+
+/* ── GLOBAL OVERRIDES ── */
+[data-matrix-mode="true"] * {
+  border-color: rgba(0, 255, 65, 0.12) !important;
+}
+
+[data-matrix-mode="true"] a,
+[data-matrix-mode="true"] button {
+  color: #00ff41 !important;
+}
+
+[data-matrix-mode="true"] a:hover,
+[data-matrix-mode="true"] button:hover {
+  color: #33ff66 !important;
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+}
+
+/* ── TERMINAL WINDOW PANELS ── */
+[data-matrix-mode="true"] .dossier-panel {
+  background: rgba(0, 8, 0, 0.85) !important;
+  border: 1px solid rgba(0, 255, 65, 0.15) !important;
+  box-shadow:
+    0 0 1px rgba(0, 255, 65, 0.3),
+    inset 0 0 30px rgba(0, 255, 65, 0.02) !important;
+  position: relative;
+}
+
+/* Terminal header bar on panels */
+[data-matrix-mode="true"] .dossier-panel::before {
+  content: "── ■ □ ──────────────────────────────────────";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: rgba(0, 255, 65, 0.25);
+  letter-spacing: 0.05em;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.08);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ── TEXT STYLING ── */
+[data-matrix-mode="true"] .text-glow {
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5), 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+[data-matrix-mode="true"] .text-crimson,
+[data-matrix-mode="true"] .text-crimson-dim {
+  color: #00ff41 !important;
+}
+
+[data-matrix-mode="true"] h1,
+[data-matrix-mode="true"] h2,
+[data-matrix-mode="true"] h3 {
+  color: #00ff41 !important;
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.3);
+}
+
+[data-matrix-mode="true"] p,
+[data-matrix-mode="true"] span,
+[data-matrix-mode="true"] li {
+  color: rgba(0, 255, 65, 0.75);
+}
+
+[data-matrix-mode="true"] .terminal-label {
+  color: rgba(0, 255, 65, 0.5) !important;
+}
+
+/* ── NODE DOTS ── */
+[data-matrix-mode="true"] .node-dot {
+  background: #00ff41 !important;
+  box-shadow: 0 0 6px #00ff41, 0 0 12px rgba(0, 255, 65, 0.3) !important;
+}
+
+/* Data strips */
+[data-matrix-mode="true"] .data-strip {
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent) !important;
+  height: 1px;
+}
+
+[data-matrix-mode="true"] .circuit-line {
+  background: linear-gradient(90deg, rgba(0, 255, 65, 0.15), transparent) !important;
+}
+
+/* ── PORTRAIT FRAME ── */
+[data-matrix-mode="true"] .portrait-frame {
+  border: 1px solid rgba(0, 255, 65, 0.2) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.05) !important;
+}
+
+[data-matrix-mode="true"] .portrait-frame::after {
+  content: "// SUBJECT.RENDER :: SIMULATED";
+  position: absolute;
+  bottom: 4px;
+  left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: rgba(0, 255, 65, 0.35);
+  letter-spacing: 0.15em;
+  z-index: 10;
+}
+
+/* ── PHASING INTERACTION ── */
+[data-matrix-mode="true"] .matrix-phased {
+  position: relative;
+}
+
+[data-matrix-mode="true"] .matrix-phased::before {
+  content: "/* REDACTED :: ACCESS_LEVEL > 5 */";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: #00ff41;
+  z-index: 20;
+  opacity: 0.85;
+  pointer-events: none;
+  background: rgba(0, 8, 0, 0.9);
+  padding: 4px 12px;
+  border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+/* ── SCANLINE EFFECT ── */
+[data-matrix-mode="true"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.008) 2px,
+    rgba(0, 255, 65, 0.008) 4px
+  );
+}
+
+/* ── CRT FLICKER ── */
+@keyframes matrix-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  96% { opacity: 0.9; }
+  97% { opacity: 1; }
+}
+
+[data-matrix-mode="true"] {
+  animation: matrix-flicker 8s infinite;
+}
+
+/* ── GLITCH TEXT ── */
+@keyframes matrix-glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 1px); }
+}
+
+[data-matrix-mode="true"] .section-header-label {
+  animation: matrix-glitch 5s infinite;
+  color: #00ff41 !important;
+}
+
+/* ── BUTTONS & LINKS ── */
+[data-matrix-mode="true"] .border-crimson,
+[data-matrix-mode="true"] .border-crimson-dim {
+  border-color: rgba(0, 255, 65, 0.3) !important;
+}
+
+[data-matrix-mode="true"] .bg-crimson {
+  background: rgba(0, 255, 65, 0.15) !important;
+}
+
+[data-matrix-mode="true"] .hover\:bg-crimson\/10:hover {
+  background: rgba(0, 255, 65, 0.1) !important;
+}
+
+/* ── SCROLLBAR ── */
+[data-matrix-mode="true"]::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+[data-matrix-mode="true"]::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 65, 0.2);
+  border: 1px solid rgba(0, 255, 65, 0.1);
+}
+
+[data-matrix-mode="true"]::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 65, 0.4);
+}
+
+/* ── GRID PATTERN OVERRIDE ── */
+[data-matrix-mode="true"] .grid-pattern {
+  background-image:
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px) !important;
+  background-size: 40px 40px !important;
+}
+
+/* ── CARD GLARE ── */
+[data-matrix-mode="true"] .project-card-glare {
+  display: none !important;
+}
+
+/* ── NAVIGATION ── */
+[data-matrix-mode="true"] nav {
+  background: rgba(0, 8, 0, 0.92) !important;
+  backdrop-filter: blur(8px);
+}
+
+/* ── BACKGROUNDS ── */
+[data-matrix-mode="true"] section {
+  background: transparent !important;
+}
+
+[data-matrix-mode="true"] .bg-background,
+[data-matrix-mode="true"] .bg-surface {
+  background: rgba(0, 8, 0, 0.9) !important;
+}
