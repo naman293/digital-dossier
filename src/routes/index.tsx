@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 import TelemetryStrip from "@/components/TelemetryStrip";
 import BootSequence from "@/components/BootSequence";
 import ResumeCompiler from "@/components/ResumeCompiler";
-import DossierInvaders from "@/components/DossierInvaders";
+import HashCracker from "@/components/HashCracker";
 import GridBackground from "@/components/GridBackground";
 import ScrollProgress from "@/components/ScrollProgress";
 import NoiseToggle from "@/components/NoiseToggle";
@@ -126,7 +126,7 @@ function Index() {
 
       <AnimatePresence>
         {showMinigame && (
-          <DossierInvaders 
+          <HashCracker 
             onClose={() => setShowMinigame(false)}
             onWin={() => setIsHackerElite(true)}
           />

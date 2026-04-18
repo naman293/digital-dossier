@@ -506,6 +506,13 @@
   border-color: rgba(0, 255, 65, 0.12) !important;
 }
 
+/* Spacing between lines in matrix mode */
+[data-matrix-mode="true"] p,
+[data-matrix-mode="true"] div,
+[data-matrix-mode="true"] li {
+  line-height: 1.8;
+}
+
 [data-matrix-mode="true"] a,
 [data-matrix-mode="true"] button {
   color: #00ff41 !important;
