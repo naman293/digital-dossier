@@ -54,6 +54,16 @@ Final-year software engineer building scalable, real-world systems. Strong in ba
 
 ---
 
+## Want to Build Your Own Digital Dossier?
+
+If you like the terminal-style, immersive aesthetic of this portfolio, you can create your own! 
+All the design details, theme specifications, and structural guidelines are documented in [design.md](design.md).
+
+**Prompt to generate your own version using an AI coding assistant:**
+> "Act as an expert frontend developer and UX designer. Build a personal portfolio website for me based on the exact specifications and aesthetic guidelines provided in this document: [insert contents of design.md here]. Use my personal details: [insert your name, skills, projects, and contact links]. Make sure it is fully responsive, interactive, and strictly follows the terminal/cyberpunk aesthetic outlined in the design specs."
+
+---
+
 <p align="center">
   <sub>Always building. Always shipping.</sub>
 </p>
