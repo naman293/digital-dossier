@@ -8,7 +8,8 @@
 
 <p align="center">
   <a href="https://github.com/naman293">GitHub</a> &nbsp;·&nbsp;
-  <a href="https://www.linkedin.com/in/naman-soni-3b83b4256">LinkedIn</a>
+  <a href="https://www.linkedin.com/in/naman-soni-3b83b4256">LinkedIn</a> &nbsp;·&nbsp;
+  <a href="https://naman-soni.netlify.app/">Live Portfolio</a>
 </p>
 
 ---
