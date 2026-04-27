@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import PingDisplay from "./PingDisplay";
 
 interface TelemetryStripProps {
   variant?: "wave" | "pulse" | "scan";
@@ -141,8 +140,6 @@ export default function TelemetryStrip({
       </div>
 
       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 z-10">
-        <PingDisplay />
-        <span className="opacity-40 hidden sm:inline text-[8px] tracking-tighter text-crimson">|</span>
         <div className="flex items-center gap-1.5 leading-none">
           <span
             className="terminal-label"
