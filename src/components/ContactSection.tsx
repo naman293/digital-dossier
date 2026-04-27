@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import emailjs from "@emailjs/browser";
 import { soundEngine } from "@/lib/audio";
 import { SectionHeader } from "./AboutSection";
 
@@ -26,35 +25,34 @@ function MatrixContact() {
     setFormState("sending");
     setLogs((prev) => [...prev, `> Encrypting payload from ${form.name}...`]);
 
-    const templateParams = {
-      from_name: form.name,
-      subject: `[MATRIX] Message from ${form.name}`,
-      message: form.message,
-      reply_to: form.email,
+    const encode = (data: Record<string, string>) => {
+      return Object.keys(data)
+        .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&");
     };
 
-    emailjs
-      .send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_placeholder",
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_placeholder",
-        templateParams,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "public_key_placeholder"
-      )
-      .then(
-        () => {
-          setFormState("sent");
-          setLogs((prev) => [
-            ...prev,
-            "> Packet transmitted successfully.",
-            "> ACK received from naman@reality.",
-            "> Connection will remain open.",
-          ]);
-        },
-        () => {
-          setFormState("error");
-          setLogs((prev) => [...prev, "> ERR: Transmission failed. Retry."]);
-        }
-      );
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode({
+        "form-name": "contact",
+        ...form,
+        subject: `[MATRIX] Message from ${form.name}`,
+      }),
+    })
+      .then(() => {
+        setFormState("sent");
+        setLogs((prev) => [
+          ...prev,
+          "> Packet transmitted successfully.",
+          "> ACK received from naman@reality.",
+          "> Connection will remain open.",
+        ]);
+      })
+      .catch(() => {
+        setFormState("error");
+        setLogs((prev) => [...prev, "> ERR: Transmission failed. Retry."]);
+      });
   };
 
   return (
@@ -230,27 +228,26 @@ function DossierContact() {
 
     setFormState("sending");
 
-    const templateParams = {
-      from_name: form.name,
-      subject: form.subject || `[DOSSIER] Message from ${form.name}`,
-      message: form.message,
-      reply_to: form.email,
+    const encode = (data: Record<string, string>) => {
+      return Object.keys(data)
+        .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&");
     };
 
-    emailjs
-      .send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_placeholder",
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_placeholder",
-        templateParams,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "public_key_placeholder"
-      )
-      .then(
-        () => setFormState("sent"),
-        (error) => {
-          console.error("Transmission failed:", error);
-          setFormState("error");
-        }
-      );
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode({
+        "form-name": "contact",
+        ...form,
+        subject: form.subject || `[DOSSIER] Message from ${form.name}`,
+      }),
+    })
+      .then(() => setFormState("sent"))
+      .catch((error) => {
+        console.error("Transmission failed:", error);
+        setFormState("error");
+      });
   };
 
   const reset = () => {
