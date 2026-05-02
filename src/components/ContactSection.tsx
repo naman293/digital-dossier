@@ -31,11 +31,12 @@ function MatrixContact() {
         .join("&");
     };
 
-    fetch("/", {
+    fetch("/contact-form.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: encode({
         "form-name": "contact",
+        "bot-field": "",
         ...form,
         subject: `[MATRIX] Message from ${form.name}`,
       }),
@@ -45,7 +46,7 @@ function MatrixContact() {
         setLogs((prev) => [
           ...prev,
           "> Packet transmitted successfully.",
-          "> ACK received from naman@reality.",
+          "> ACK received by Netlify Cloud.",
           "> Connection will remain open.",
         ]);
       })
@@ -87,10 +88,22 @@ function MatrixContact() {
 
           {/* Input form */}
           {formState !== "sent" ? (
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form 
+              onSubmit={handleSubmit} 
+              className="space-y-3"
+              name="contact"
+              action="/contact-form.html"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              <p className="hidden">
+                <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+              </p>
               <div className="flex items-center gap-2">
                 <span style={{ color: "rgba(0,255,65,0.4)" }}>{">"} agent_name:</span>
                 <input
+                  name="name"
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
@@ -106,6 +119,7 @@ function MatrixContact() {
               <div className="flex items-center gap-2">
                 <span style={{ color: "rgba(0,255,65,0.4)" }}>{">"} reply_addr:</span>
                 <input
+                  name="email"
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
@@ -121,6 +135,7 @@ function MatrixContact() {
               <div>
                 <div style={{ color: "rgba(0,255,65,0.4)" }}>{">"} payload:</div>
                 <textarea
+                  name="message"
                   value={form.message}
                   onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
                   required
@@ -234,11 +249,12 @@ function DossierContact() {
         .join("&");
     };
 
-    fetch("/", {
+    fetch("/contact-form.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: encode({
         "form-name": "contact",
+        "bot-field": "",
         ...form,
         subject: form.subject || `[DOSSIER] Message from ${form.name}`,
       }),
@@ -280,7 +296,15 @@ function DossierContact() {
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit}
                   className="space-y-5"
+                  name="contact"
+                  action="/contact-form.html"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
                 >
+                  <input type="hidden" name="form-name" value="contact" />
+                  <p className="hidden">
+                    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                  </p>
                   <div className="space-y-1.5">
                     <label className="font-mono text-[9px] tracking-[0.2em] text-label">
                       SENDER IDENTIFICATION
@@ -375,8 +399,8 @@ function DossierContact() {
                     TRANSMISSION DISPATCHED
                   </div>
                   <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-                    Your email client should have opened. If not, reach out
-                    directly via the channels in the footer.
+                    Transmission received by Netlify Systems. 
+                    I'll get back to you within 24 hours.
                   </p>
                   <div className="data-strip my-4" />
                   <button
