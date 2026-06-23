@@ -77,7 +77,7 @@ function Index() {
 
   // Global typing sound listener
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       if (!e.key) return;
       // Don't play if they hold down the key endlessly to avoid audio explosion
       if (e.repeat) return;

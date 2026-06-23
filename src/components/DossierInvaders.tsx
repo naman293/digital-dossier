@@ -69,12 +69,12 @@ export default function DossierInvaders({ onClose, onWin }: { onClose: () => voi
 
   // Input handling
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       if (!e.key) return;
       keys.current[e.key] = true;
       if (e.key === " ") e.preventDefault();
     };
-    const handleKeyUp = (e: KeyboardEvent) => {
+    const handleKeyUp = (e: globalThis.KeyboardEvent) => {
       if (!e.key) return;
       keys.current[e.key] = false;
     };
