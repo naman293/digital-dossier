@@ -13,7 +13,7 @@ const BUILD_LOGS = [
   "[  OK  ] Dependency graph resolved.",
   "[  OK  ] Linking node structures into PDF binary...",
   "[ INFO ] Finalizing encryption layers...",
-  "BUILD SUCCESS: Naman_Soni_Resume.pdf generated."
+  "BUILD SUCCESS: resume.pdf generated."
 ];
 
 export default function ResumeCompiler({ onComplete }: { onComplete: () => void }) {
@@ -36,8 +36,8 @@ export default function ResumeCompiler({ onComplete }: { onComplete: () => void 
         
         // Native browser trick to force file download programmatically 
         const a = document.createElement("a");
-        a.href = "/resume/Naman_Soni_Resume.pdf";
-        a.download = "Naman_Soni_Resume.pdf";
+        a.href = "/resume/resume.pdf";
+        a.download = "resume.pdf";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

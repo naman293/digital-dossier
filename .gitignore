@@ -42,3 +42,6 @@ dist-ssr
 
 # Large audio assets (serve from public/ instead)
 audio/
+
+# Resume source/working files (PDF is tracked, not the raw markdown)
+public/resume/*.md
