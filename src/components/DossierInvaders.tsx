@@ -33,7 +33,7 @@ export default function DossierInvaders({ onClose, onWin }: { onClose: () => voi
   const [gameState, setGameState] = useState<"playing" | "gameover" | "victory">("playing");
   const [lastShotTime, setLastShotTime] = useState(0);
 
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number | null>(null);
   const bugsDirection = useRef<1 | -1>(1);
   const bugsMoveTimer = useRef(0);
   const keys = useRef<{ [key: string]: boolean }>({});
