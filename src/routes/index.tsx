@@ -78,6 +78,7 @@ function Index() {
   // Global typing sound listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!e.key) return;
       // Don't play if they hold down the key endlessly to avoid audio explosion
       if (e.repeat) return;
       // We don't play for modifier keys alone to prevent weird phantom clicks when just holding Shift

@@ -11,6 +11,7 @@ export function useMultiSequenceCode(
     if (!enabled) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!e.key) return;
       const char = e.key.toLowerCase();
       if (char.length !== 1) return;
 

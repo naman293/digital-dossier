@@ -14,6 +14,7 @@ export function useKonamiCode() {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only care before sequence completes
       if (success) return;
+      if (!e.key) return;
 
       const expectedKey = KONAMI_CODE[inputIndex];
       // We do a loose match or exact depending on capital letters.
